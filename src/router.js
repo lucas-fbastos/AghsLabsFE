@@ -11,6 +11,7 @@ const router = createRouter({
     { path: '/', component: HomeView, meta: { title: 'Find a match' } },
     { path: '/matches/:id(\\d+)', component: MatchView, meta: { title: 'Match overview' } },
     { path: '/heroes', component: HeroesView, meta: { title: 'Heroes' } },
+    { path: '/players/:id(\\d+)', component: PlayersView, meta: { title: 'Player profile' } },
     { path: '/players', component: PlayersView, meta: { title: 'Pro players' } },
     { path: '/tournaments', component: TournamentsView, meta: { title: 'Tournaments' } },
     { path: '/:pathMatch(.*)*', redirect: '/' },

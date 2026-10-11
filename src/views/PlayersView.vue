@@ -1,5 +1,6 @@
 <script setup>
-import {computed, onBeforeUnmount, ref} from 'vue'
+import {computed, onBeforeUnmount, ref, watch} from 'vue'
+import {useRoute} from 'vue-router'
 import {Search, UserRound, ArrowUpRight} from '@lucide/vue'
 import {api} from '../lib/api.js'
 import {formatDuration, imageUrl, modeName} from '../lib/dota.js'
@@ -7,6 +8,7 @@ import HeroPortrait from '../components/HeroPortrait.vue'
 import SectionHeader from '../components/SectionHeader.vue'
 
 const accountId = ref('')
+const route = useRoute()
 const player = ref(null)
 const recent = ref([])
 const winLoss = ref(null)
@@ -19,8 +21,7 @@ const winRate = computed(() => {
   return wins + losses ? `${Math.round(wins / (wins + losses) * 100)}%` : '—'
 })
 
-async function search() {
-  const id = accountId.value.trim()
+async function search(id = accountId.value.trim()) {
   if (!/^\d+$/.test(id)) {
     error.value = 'Enter a numeric Dota account ID.';
     return
@@ -44,6 +45,21 @@ async function search() {
     if (!requestController.signal.aborted) loading.value = false
   }
 }
+
+watch(() => route.params.id, id => {
+  if (typeof id === 'string' && /^\d+$/.test(id)) {
+    accountId.value = id
+    search(id)
+  } else {
+    controller?.abort()
+    accountId.value = ''
+    player.value = null
+    recent.value = []
+    winLoss.value = null
+    error.value = ''
+    loading.value = false
+  }
+}, {immediate: true})
 
 onBeforeUnmount(() => controller?.abort())
 </script>

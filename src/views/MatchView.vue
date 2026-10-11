@@ -1,7 +1,8 @@
 <script setup>
 import {computed, ref, watch, onBeforeUnmount} from 'vue'
 import {useRoute} from 'vue-router'
-import {ArrowLeft, RefreshCw, Sparkles, Trophy, TrendingUp} from '@lucide/vue'
+import {ArrowLeft, RefreshCw, Trophy} from '@lucide/vue'
+import {PhCoins} from '@phosphor-icons/vue'
 import {api} from '../lib/api.js'
 import {repeatedItemsFromMatch, coreMvpScore, supportMvpScore, compact} from '../lib/dota.js'
 import ScoreHero from '../components/ScoreHero.vue'
@@ -58,7 +59,6 @@ const topTanker = computed(() => [...allPlayers.value]
   .sort((a, b) => damageTakenTotal(b) - damageTakenTotal(a))[0])
 const netWorthEstimate = player => (player?.gold || 0) + (player?.goldSpent || 0)
 const topNetWorth = computed(() => [...allPlayers.value].sort((a, b) => netWorthEstimate(b) - netWorthEstimate(a))[0])
-const totalKills = computed(() => (match.value?.radiantScore || 0) + (match.value?.direScore || 0))
 </script>
 
 <template>
@@ -120,20 +120,6 @@ const totalKills = computed(() => (match.value?.radiantScore || 0) + (match.valu
             </div>
           </div>
         </section>
-        <div class="mt-5 grid gap-4 sm:grid-cols-2">
-          <div class="panel flex items-center gap-4 rounded-xl p-5"><span
-              class="grid size-11 place-items-center rounded-lg bg-[#d946ff]/10 text-[#d946ff]"><Sparkles
-              :size="21"/></span>
-            <div><p class="text-[.63rem] uppercase tracking-[.16em] muted">Total kills</p>
-              <p class="display-font mt-1 text-xl">{{ totalKills }}</p></div>
-          </div>
-          <div class="panel flex items-center gap-4 rounded-xl p-5"><span
-              class="grid size-11 place-items-center rounded-lg bg-[#d946ff]/10 text-[#d946ff]"><TrendingUp :size="21"/></span>
-            <div><p class="text-[.63rem] uppercase tracking-[.16em] muted">Highest hero damage</p>
-              <p class="display-font mt-1 truncate text-xl">{{ compact(topDamage?.heroDamage) }} <span
-                  class="font-sans text-xs muted">{{ topDamage?.hero?.localizedName }}</span></p></div>
-          </div>
-        </div>
         <section class="panel mt-5 self-start rounded-2xl p-6"><p class="eyebrow">Match insight</p>
           <h3 class="display-font mt-2 text-2xl">At a glance</h3>
           <div class="mt-6 space-y-4 text-sm">
@@ -155,7 +141,7 @@ const totalKills = computed(() => (match.value?.radiantScore || 0) + (match.valu
               }} <b class="gold">· {{ topTanker ? compact(damageTakenTotal(topTanker)) : '—' }}</b></span></div>
             <div class="flex justify-between gap-4"><span class="muted" title="Estimated from current gold plus gold spent">Top net worth*</span><span class="text-right">{{
                 topNetWorth?.personaName || topNetWorth?.name || topNetWorth?.hero?.localizedName || '—'
-              }} <b class="gold">· {{ compact(netWorthEstimate(topNetWorth)) }}</b></span></div>
+              }} <b class="inline-flex items-center gap-1 text-[#f5c84c]">· {{ compact(netWorthEstimate(topNetWorth)) }}<PhCoins :size="16"/></b></span></div>
           </div>
           <p class="mt-4 text-xs muted">* Estimated from current gold and total gold spent.</p>
         </section>
