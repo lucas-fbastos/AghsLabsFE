@@ -19,6 +19,7 @@ async function get(path, signal, notFoundMessage = 'No data was found for that I
 
 export const api = {
   match: (id, signal) => get(`/matches/details/${id}`, signal),
+  liveMatches: (limit = 10, signal) => get(`/matches/live?limit=${limit}`, signal),
   heroes: (signal) => get('/heroes', signal, 'No heroes are available yet. Seed the API database and try again.'),
   player: (id, signal) => get(`/player/${id}`, signal),
   playerRecent: (id, signal) => get(`/matches/${id}/recent`, signal),

@@ -1,25 +1,26 @@
 <script setup>
 import MatchSearch from '../components/MatchSearch.vue'
+import LiveMatches from '../components/LiveMatches.vue'
 import {ArrowDown, Crosshair, Shield, Trophy} from '@lucide/vue'
 </script>
 
 <template>
   <main>
-    <section class="home-scene relative flex min-h-200 items-center justify-center pt-19 sm:min-h-screen">
-      <div class="site-container relative z-10 mx-auto flex flex-col items-center pb-20 pt-20 text-center sm:pb-10">
+    <section class="home-scene relative flex min-h-[68svh] items-center justify-center pt-19 sm:min-h-[70svh]">
+      <div class="site-container relative z-10 mx-auto flex flex-col items-center pb-12 pt-10 text-center sm:pb-8">
         <div
-            class="mb-7 inline-flex items-center gap-2 rounded-full border border-[#d946ff]/40 bg-black px-4 py-2 text-[.65rem] font-bold uppercase tracking-[.2em] text-[#d946ff]">
+            class="mb-5 inline-flex items-center gap-2 rounded-full border border-[#d946ff]/40 bg-black px-4 py-2 text-[.65rem] font-bold uppercase tracking-[.2em] text-[#d946ff]">
           <span class="size-1.5 rounded-full bg-[#d946ff] shadow-[0_0_12px_#d946ff]"></span> The battlefield, decoded
         </div>
-        <h1 class="display-font max-w-217.5 text-[clamp(3.1rem,8.2vw,7.6rem)] leading-[.98] tracking-[-.045em] text-[#f6f1e5] [text-shadow:0_4px_30px_rgba(0,0,0,.8)]">
+        <h1 class="display-font max-w-217.5 text-[clamp(2.8rem,6.2vw,5.6rem)] leading-[.98] tracking-[-.045em] text-[#f6f1e5] [text-shadow:0_4px_30px_rgba(0,0,0,.8)]">
           Every match has <span class="text-[#d946ff]">a story.</span></h1>
-        <p class="mt-6 max-w-xl text-sm leading-7 text-[#d9ddd4] [text-shadow:0_2px_12px_#000] sm:text-base">Search any
+        <p class="mt-4 max-w-xl text-sm leading-7 text-[#d9ddd4] [text-shadow:0_2px_12px_#000] sm:text-base">Search any
           Dota 2 match to see the plays, players, and numbers behind the final throne.</p>
-        <div class="mt-10 w-full max-w-190">
+        <div class="mt-7 w-full max-w-190">
           <MatchSearch/>
         </div>
         <div
-            class="mt-12 flex flex-wrap items-center justify-center gap-x-8 gap-y-3 text-[.69rem] font-bold uppercase tracking-[.15em] text-[#d4ddd3] sm:gap-x-12">
+            class="mt-8 flex flex-wrap items-center justify-center gap-x-8 gap-y-3 text-[.69rem] font-bold uppercase tracking-[.15em] text-[#d4ddd3] sm:gap-x-12">
           <span class="flex items-center gap-2"><Crosshair :size="16"
                                                            class="text-[#d946ff]"/> Match breakdowns</span><span
             class="flex items-center gap-2"><Shield :size="16" class="text-[#d946ff]"/> Hero builds</span><span
@@ -30,6 +31,7 @@ import {ArrowDown, Crosshair, Shield, Trophy} from '@lucide/vue'
         <ArrowDown :size="19"/>
       </a>
     </section>
+    <LiveMatches />
     <section id="explore" class="relative border-t border-white/10 bg-[#151515] py-20">
       <div class="site-container">
         <div class="mb-9 flex flex-wrap items-end justify-between gap-5">
