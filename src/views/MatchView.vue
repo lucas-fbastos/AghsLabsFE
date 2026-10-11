@@ -3,11 +3,12 @@ import {computed, ref, watch, onBeforeUnmount} from 'vue'
 import {useRoute} from 'vue-router'
 import {ArrowLeft, RefreshCw, Sparkles, Trophy, TrendingUp} from '@lucide/vue'
 import {api} from '../lib/api.js'
-import {repeatedItemsFromMatch, mvpScore, compact} from '../lib/dota.js'
+import {repeatedItemsFromMatch, coreMvpScore, supportMvpScore, compact} from '../lib/dota.js'
 import ScoreHero from '../components/ScoreHero.vue'
 import TeamTable from '../components/TeamTable.vue'
 import HotItems from '../components/HotItems.vue'
 import MvpCard from '../components/MvpCard.vue'
+import SupportMvpCard from '../components/SupportMvpCard.vue'
 
 const route = useRoute()
 const match = ref(null)
@@ -43,7 +44,8 @@ const scoreboards = computed(() => {
 })
 const allPlayers = computed(() => [...radiant.value, ...dire.value])
 const hotItems = computed(() => match.value ? repeatedItemsFromMatch(match.value) : [])
-const mvps = computed(() => [...allPlayers.value].sort((a, b) => mvpScore(b) - mvpScore(a)).slice(0, 3))
+const coreMvps = computed(() => [...allPlayers.value].sort((a, b) => coreMvpScore(b) - coreMvpScore(a)).slice(0, 3))
+const supportMvps = computed(() => [...allPlayers.value].sort((a, b) => supportMvpScore(b) - supportMvpScore(a)).slice(0, 3))
 const topDamage = computed(() => [...allPlayers.value].sort((a, b) => (b.heroDamage || 0) - (a.heroDamage || 0))[0])
 const topKills = computed(() => [...allPlayers.value].sort((a, b) => (b.kills || 0) - (a.kills || 0))[0])
 const topHealer = computed(() => [...allPlayers.value].sort((a, b) => (b.heroHeal || 0) - (a.heroHeal || 0))[0])
@@ -98,14 +100,24 @@ const totalKills = computed(() => (match.value?.radiantScore || 0) + (match.valu
               {{ match.radiantWin ? 'Radiant' : 'Dire' }}</p></div>
         </section>
         <ScoreHero :match="match"/>
-        <section class="mt-8">
-          <p class="eyebrow">Standout performances</p>
-          <h2 class="display-font mt-1 text-3xl">Match MVPs</h2>
-          <p class="mt-2 mb-5 text-xs muted">Ranked from kills, assists, damage, and deaths. These are Aghs Labs
-            estimates.</p>
-          <div class="grid gap-3">
-            <MvpCard v-for="(player, index) in mvps" :key="`${player.hero?.id}-${index}`" :player="player"
-                     :rank="index + 1"/>
+        <section class="mt-8 grid gap-8 lg:grid-cols-2">
+          <div>
+            <p class="eyebrow">Standout performances</p>
+            <h2 class="display-font mt-1 text-3xl">Core MVPs</h2>
+            <p class="mt-2 mb-5 text-xs muted">Ranked by kills, damage, and net worth, with assists and deaths factored in.</p>
+            <div class="grid gap-3">
+              <MvpCard v-for="(player, index) in coreMvps" :key="`${player.playerSlot}-${player.hero?.id}-${index}`"
+                       :player="player" :rank="index + 1"/>
+            </div>
+          </div>
+          <div>
+            <p class="eyebrow">Team support</p>
+            <h2 class="display-font mt-1 text-3xl">Support MVPs</h2>
+            <p class="mt-2 mb-5 text-xs muted">Ranked by healing, stun duration, observer wards, and sentries placed.</p>
+            <div class="grid gap-3">
+              <SupportMvpCard v-for="(player, index) in supportMvps" :key="`${player.playerSlot}-${player.hero?.id}-${index}`"
+                              :player="player" :rank="index + 1"/>
+            </div>
           </div>
         </section>
         <div class="mt-5 grid gap-4 sm:grid-cols-2">

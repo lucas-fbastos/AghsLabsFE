@@ -14,6 +14,7 @@ defineProps({player: {type: Object, required: true}, rank: {type: Number, requir
     <div class="text-right"><p class="text-sm font-semibold text-[#d946ff]">{{
         player.kills ?? 0
       }}/{{ player.deaths ?? 0 }}/{{ player.assists ?? 0 }}</p>
-      <p class="text-[.65rem] muted">{{ compact(player.heroDamage) }} damage</p></div>
+      <p class="text-[.65rem] muted">{{ compact(player.heroDamage) }} damage</p>
+      <p class="text-[.65rem] muted">{{ compact(player.netWorth ?? ((player.gold || 0) + (player.goldSpent || 0))) }} net worth</p></div>
   </div>
 </template>

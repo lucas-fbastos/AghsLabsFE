@@ -28,8 +28,16 @@ export const compact = (value) => value == null ? '—' : Intl.NumberFormat('en-
 export const displayName = (player) => player?.personaName || player?.name || 'Anonymous player'
 export const modeName = (mode) => (mode || 'Unknown').replaceAll('_', ' ').toLowerCase().replace(/\b\w/g, (c) => c.toUpperCase())
 
-export function mvpScore(player) {
-  return (player.kills || 0) * 3 + (player.assists || 0) + (player.heroDamage || 0) / 7000 - (player.deaths || 0) * 1.2
+export function coreMvpScore(player) {
+  const netWorth = player.netWorth ?? (player.gold || 0) + (player.goldSpent || 0)
+  return (player.kills || 0) * 3 + (player.assists || 0) * 0.5 + (player.heroDamage || 0) / 7000 + netWorth / 10000 - (player.deaths || 0) * 1.2
+}
+
+export function supportMvpScore(player) {
+  return (player.heroHeal ?? player.heroHealing ?? 0) / 3000
+    + (player.stuns || 0) / 2
+    + (player.obsPlaced || 0) * 2
+    + (player.senPlaced || 0) * 2
 }
 
 export function repeatedItemsFromMatch(match) {
