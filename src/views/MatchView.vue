@@ -40,7 +40,10 @@ onBeforeUnmount(() => controller?.abort())
 const radiant = computed(() => [...(match.value?.radiantTeam || [])].sort((a, b) => (b.kills || 0) - (a.kills || 0)))
 const dire = computed(() => [...(match.value?.direTeam || [])].sort((a, b) => (b.kills || 0) - (a.kills || 0)))
 const scoreboards = computed(() => {
-  const teams = [{side: 'Radiant', players: radiant.value}, {side: 'Dire', players: dire.value}]
+  const teams = [
+    {side: 'Radiant', name: match.value?.radiantName, players: radiant.value},
+    {side: 'Dire', name: match.value?.direName, players: dire.value},
+  ]
   return match.value?.radiantWin ? teams : teams.reverse()
 })
 const allPlayers = computed(() => [...radiant.value, ...dire.value])
@@ -150,7 +153,13 @@ const topNetWorth = computed(() => [...allPlayers.value].sort((a, b) => netWorth
             <h2 class="display-font mt-1 text-3xl">Team scoreboards</h2></div>
           <span class="text-xs muted">Stats, heroes, and final item builds</span></div>
         <div class="grid gap-5">
-          <TeamTable v-for="team in scoreboards" :key="team.side" :players="team.players" :side="team.side"/>
+          <TeamTable
+            v-for="team in scoreboards"
+            :key="team.side"
+            :players="team.players"
+            :side="team.side"
+            :name="team.name"
+          />
         </div>
         <HotItems :items="hotItems"/>
       </template>
