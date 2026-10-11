@@ -1,42 +1,267 @@
 @import "tailwindcss";
 
-@font-face { font-family: 'DM Sans'; src: url('/fonts/DMSans-Variable.ttf') format('truetype'); font-style: normal; font-weight: 400 700; font-display: swap; }
-@font-face { font-family: 'Marcellus'; src: url('/fonts/Marcellus-Regular.ttf') format('truetype'); font-style: normal; font-weight: 400; font-display: swap; }
-@font-face { font-family: 'Macondo Swash Caps'; src: url('/fonts/MacondoSwashCaps-Regular.ttf') format('truetype'); font-style: normal; font-weight: 400; font-display: swap; }
-@font-face { font-family: 'Metal Mania'; src: url('/fonts/MetalMania-Regular.ttf') format('truetype'); font-style: normal; font-weight: 400; font-display: swap; }
+@font-face {
+    font-family: 'DM Sans';
+    src: url('/fonts/DMSans-Variable.ttf') format('truetype');
+    font-style: normal;
+    font-weight: 400 700;
+    font-display: swap;
+}
 
-:root { font-family: 'DM Sans', sans-serif; color-scheme: dark; --accent: #d946ff; --accent-bright: #ea73ff; --accent-soft: rgba(217, 70, 255, .13); --accent-border: rgba(217, 70, 255, .42); }
-html { scroll-behavior: smooth; }
-body { margin: 0; min-width: 320px; background: #000; }
-button, input { font: inherit; }
-button { cursor: pointer; }
-::selection { background: var(--accent); color: #000; }
+@font-face {
+    font-family: 'Marcellus';
+    src: url('/fonts/Marcellus-Regular.ttf') format('truetype');
+    font-style: normal;
+    font-weight: 400;
+    font-display: swap;
+}
 
-.display-font { font-family: 'Marcellus', Georgia, serif; }
-.eyebrow { letter-spacing: .24em; text-transform: uppercase; font-size: .69rem; font-weight: 700; color: var(--accent-bright); }
-.score-team-label { font-size: clamp(.85rem, 1.5vw, 1.2rem); letter-spacing: .12em; }
-.glass { background: #000; border: 1px solid rgba(217, 70, 255, .28); box-shadow: 0 16px 60px rgba(0,0,0,.5); }
-.panel { background: #000; border: 1px solid rgba(217, 70, 255, .2); }
-.item-count-pill { position: absolute; z-index: 1; top: .75rem; right: .75rem; display: inline-flex; min-width: 2rem; height: 1.55rem; align-items: center; justify-content: center; border: 1px solid; border-radius: 999px; padding: 0 .35rem; font-weight: 800; line-height: 1; white-space: nowrap; }
-.muted { color: #99a4a1; }
-.gold { color: var(--accent-bright); }
-.site-container { width: min(100% - 2rem, 1420px); margin-inline: auto; }
-.field { width: 100%; border: 1px solid var(--accent-border); border-radius: .75rem; background: #000; color: #f4f3ed; padding: .9rem 1rem; outline: none; }
-.field:focus { border-color: var(--accent-bright); box-shadow: 0 0 0 3px var(--accent-soft); }
-.primary-button { display: inline-flex; align-items: center; justify-content: center; gap: .55rem; border: 1px solid var(--accent-bright); border-radius: .65rem; background: var(--accent); color: #08000b; font-weight: 700; padding: .9rem 1.25rem; box-shadow: 0 0 24px rgba(217,70,255,.18); transition: filter .2s, transform .2s; }
-.primary-button:hover { filter: brightness(1.12); transform: translateY(-1px); }
-.primary-button:disabled { opacity: .6; cursor: wait; }
-.ghost-button { display: inline-flex; align-items: center; gap: .45rem; border: 1px solid var(--accent-border); border-radius: .65rem; padding: .75rem 1rem; color: #e8dced; transition: background .2s; }
-.ghost-button:hover { background: var(--accent-soft); }
-.home-scene, .subtle-grid { background: #000; }
-.radiant-text { color: #70e2a1; font-family: 'Macondo Swash Caps', 'Marcellus', Georgia, serif; font-weight: 400; }
-.dire-text { color: #ff777d; font-family: 'Metal Mania', 'Marcellus', Georgia, serif; font-weight: 400; }
-.win-text { color: #70e2a1; }
-.loss-text { color: #ff777d; }
-.radiant-bg { background: #70e2a1; border-color: rgba(112, 226, 161, .45); }
-.dire-bg { background: #ff777d; border-color: rgba(255, 119, 125, .45); }
-.winner-banner { border: 1px solid; }
-.winner-title { font-size: clamp(3rem, 7vw, 5.5rem); line-height: 1.05; letter-spacing: .01em; }
-.winner-banner.radiant-bg { background: linear-gradient(100deg, rgba(28, 82, 51, .45), rgba(6, 24, 15, .85)); box-shadow: 0 0 35px rgba(112, 226, 161, .12); }
-.winner-banner.dire-bg { background: linear-gradient(100deg, rgba(91, 27, 35, .45), rgba(29, 8, 12, .85)); box-shadow: 0 0 35px rgba(255, 119, 125, .12); }
-@media (max-width: 640px) { .site-container { width: min(100% - 1.25rem, 1420px); } }
+@font-face {
+    font-family: 'Macondo Swash Caps';
+    src: url('/fonts/MacondoSwashCaps-Regular.ttf') format('truetype');
+    font-style: normal;
+    font-weight: 400;
+    font-display: swap;
+}
+
+@font-face {
+    font-family: 'Metal Mania';
+    src: url('/fonts/MetalMania-Regular.ttf') format('truetype');
+    font-style: normal;
+    font-weight: 400;
+    font-display: swap;
+}
+
+:root {
+    font-family: 'DM Sans', sans-serif;
+    color-scheme: dark;
+    --accent: #d946ff;
+    --accent-bright: #ea73ff;
+    --accent-soft: rgba(217, 70, 255, .13);
+    --accent-border: rgba(217, 70, 255, .42);
+}
+
+html {
+    scroll-behavior: smooth;
+}
+
+body {
+    margin: 0;
+    min-width: 320px;
+    background: #151515;
+}
+
+button, input {
+    font: inherit;
+}
+
+button {
+    cursor: pointer;
+}
+
+::selection {
+    background: var(--accent);
+    color: #000;
+}
+
+.display-font {
+    font-family: 'Marcellus', Georgia, serif;
+}
+
+.eyebrow {
+    letter-spacing: .24em;
+    text-transform: uppercase;
+    font-size: .69rem;
+    font-weight: 700;
+    color: var(--accent-bright);
+}
+
+.score-team-label {
+    font-size: clamp(4.0rem, 5.5vw, 2.7rem);
+    letter-spacing: .12em;
+}
+
+.score-hero-meta {
+    font-size: clamp(.78rem, 1.2vw, .9rem);
+}
+
+.score-value {
+    font-size: clamp(2.8rem, 7vw, 5.8rem);
+}
+
+.score-outcome {
+    font-size: clamp(.82rem, 1.3vw, 1rem);
+    letter-spacing: .12em;
+    font-weight: 700;
+}
+
+.score-versus {
+    font-size: clamp(1.2rem, 2vw, 1.55rem);
+}
+
+.score-hero-details {
+    font-size: clamp(.82rem, 1.2vw, .95rem);
+}
+
+.glass {
+    background: rgba(10, 8, 14, .72);
+    border: 1px solid rgba(217, 70, 255, .28);
+    box-shadow: 0 16px 60px rgba(0, 0, 0, .5);
+    backdrop-filter: blur(20px) saturate(130%);
+    -webkit-backdrop-filter: blur(20px) saturate(130%);
+}
+
+.panel {
+    background: rgba(10, 8, 14, .68);
+    border: 1px solid rgba(217, 70, 255, .2);
+    backdrop-filter: blur(16px) saturate(125%);
+    -webkit-backdrop-filter: blur(16px) saturate(125%);
+}
+
+.item-count-pill {
+    position: absolute;
+    z-index: 1;
+    top: .75rem;
+    right: .75rem;
+    display: inline-flex;
+    min-width: 2rem;
+    height: 1.55rem;
+    align-items: center;
+    justify-content: center;
+    border: 1px solid;
+    border-radius: 999px;
+    padding: 0 .35rem;
+    font-weight: 800;
+    line-height: 1;
+    white-space: nowrap;
+}
+
+.muted {
+    color: #99a4a1;
+}
+
+.gold {
+    color: var(--accent-bright);
+}
+
+.site-container {
+    width: min(100% - 2rem, 1420px);
+    margin-inline: auto;
+}
+
+.field {
+    width: 100%;
+    border: 1px solid var(--accent-border);
+    border-radius: .75rem;
+    background: #000;
+    color: #f4f3ed;
+    padding: .9rem 1rem;
+    outline: none;
+}
+
+.field:focus {
+    border-color: var(--accent-bright);
+    box-shadow: 0 0 0 3px var(--accent-soft);
+}
+
+.primary-button {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: .55rem;
+    border: 1px solid var(--accent-bright);
+    border-radius: .65rem;
+    background: var(--accent);
+    color: #08000b;
+    font-weight: 700;
+    padding: .9rem 1.25rem;
+    box-shadow: 0 0 24px rgba(217, 70, 255, .18);
+    transition: filter .2s, transform .2s;
+}
+
+.primary-button:hover {
+    filter: brightness(1.12);
+    transform: translateY(-1px);
+}
+
+.primary-button:disabled {
+    opacity: .6;
+    cursor: wait;
+}
+
+.ghost-button {
+    display: inline-flex;
+    align-items: center;
+    gap: .45rem;
+    border: 1px solid var(--accent-border);
+    border-radius: .65rem;
+    padding: .75rem 1rem;
+    color: #e8dced;
+    transition: background .2s;
+}
+
+.ghost-button:hover {
+    background: var(--accent-soft);
+}
+
+.home-scene, .subtle-grid {
+    background: #151515;
+}
+
+.radiant-text {
+    color: #70e2a1;
+    font-family: 'Macondo Swash Caps', 'Marcellus', Georgia, serif;
+    font-weight: 400;
+}
+
+.dire-text {
+    color: #ff777d;
+    font-family: 'Metal Mania', 'Marcellus', Georgia, serif;
+    font-weight: 400;
+}
+
+.win-text {
+    color: #70e2a1;
+}
+
+.loss-text {
+    color: #ff777d;
+}
+
+.radiant-bg {
+    background: #70e2a1;
+    border-color: rgba(112, 226, 161, .45);
+}
+
+.dire-bg {
+    background: #ff777d;
+    border-color: rgba(255, 119, 125, .45);
+}
+
+.winner-banner {
+    border: 1px solid;
+    backdrop-filter: blur(16px) saturate(125%);
+    -webkit-backdrop-filter: blur(16px) saturate(125%);
+}
+
+.winner-title {
+    font-size: clamp(3rem, 7vw, 5.5rem);
+    line-height: 1.05;
+    letter-spacing: .01em;
+}
+
+.winner-banner.radiant-bg {
+    background: linear-gradient(100deg, rgba(28, 82, 51, .45), rgba(6, 24, 15, .85));
+    box-shadow: 0 0 35px rgba(112, 226, 161, .12);
+}
+
+.winner-banner.dire-bg {
+    background: linear-gradient(100deg, rgba(91, 27, 35, .45), rgba(29, 8, 12, .85));
+    box-shadow: 0 0 35px rgba(255, 119, 125, .12);
+}
+
+@media (max-width: 640px) {
+    .site-container {
+        width: min(100% - 1.25rem, 1420px);
+    }
+}

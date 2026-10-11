@@ -1,5 +1,5 @@
 <script setup>
-defineProps({ kicker: String, title: String, description: String })
+defineProps({kicker: String, title: String, description: String})
 </script>
 
 <template>
