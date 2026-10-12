@@ -5,7 +5,7 @@ import {Menu, X, ArrowUpRight, Swords} from '@lucide/vue'
 const open = ref(false)
 const links = [
   {to: '/heroes', label: 'Heroes'},
-  {to: '/players', label: 'Pro players'},
+  {to: '/players', label: 'Compare players'},
   {to: '/tournaments', label: 'Tournaments'},
 ]
 </script>

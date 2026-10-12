@@ -50,9 +50,9 @@ import {ArrowDown, Crosshair, Shield, Trophy} from '@lucide/vue'
           <RouterLink to="/players" class="panel group rounded-2xl p-7 transition hover:border-[#d946ff]/60">
             <Trophy :size="25" class="mb-8 text-[#d946ff]"/>
             <p class="eyebrow">02 / Players</p>
-            <h3 class="display-font mt-2 text-2xl">Follow a player</h3>
-            <p class="mt-3 text-sm leading-6 muted">Look up a Dota account and review recent results.</p><span
-              class="mt-8 inline-block text-sm text-[#d946ff] group-hover:translate-x-1 transition">View players →</span>
+            <h3 class="display-font mt-2 text-2xl">Compare with a pro</h3>
+            <p class="mt-3 text-sm leading-6 muted">Pair your recent matches with a professional player’s closest scenarios.</p><span
+              class="mt-8 inline-block text-sm text-[#d946ff] group-hover:translate-x-1 transition">Compare players →</span>
           </RouterLink>
         </div>
       </div>
