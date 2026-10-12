@@ -1,6 +1,6 @@
 <script setup>
 import { computed, useId } from 'vue'
-import { ChevronDown, Clock3, LockKeyhole, Sparkles } from '@lucide/vue'
+import { AlertTriangle, CheckCircle2, ChevronDown, Clock3, ExternalLink, LockKeyhole, Sparkles } from '@lucide/vue'
 import { compact, formatDuration, number } from '../lib/dota.js'
 import HeroPortrait from './HeroPortrait.vue'
 import ItemSlots from './ItemSlots.vue'
@@ -10,6 +10,11 @@ const props = defineProps({
   leftName: { type: String, default: 'Player one' },
   rightName: { type: String, default: 'Player two' },
   expanded: { type: Boolean, default: false },
+  dataStatus: {
+    type: String,
+    default: '',
+    validator: value => ['', 'complete', 'partial'].includes(value),
+  },
 })
 
 defineEmits(['toggle'])
@@ -50,26 +55,37 @@ const orderedItems = items => {
     class="comparison-pair overflow-hidden rounded-2xl border bg-black/30 transition"
     :class="sameHero ? 'comparison-pair-same' : 'border-white/10'"
   >
-    <button
-      type="button"
+    <div
       class="block w-full p-4 text-left sm:p-5"
       :class="canExpand ? 'cursor-pointer hover:bg-white/[.025]' : 'cursor-default'"
-      :disabled="!canExpand"
-      :aria-expanded="canExpand ? expanded : undefined"
-      :aria-controls="canExpand ? detailsId : undefined"
-      :aria-describedby="!canExpand ? `${detailsId}-unavailable` : undefined"
-      @click="$emit('toggle')"
+      @click="canExpand && $emit('toggle')"
     >
       <div class="mb-4 flex flex-wrap items-center justify-between gap-2 border-b border-white/[.08] pb-3">
         <div class="flex flex-wrap items-center gap-2">
           <span v-if="isOptimal" class="optimal-pill"><Sparkles :size="12" aria-hidden="true" /> Optimal scenario</span>
           <span v-else-if="sameHero" class="optimal-pill"><Sparkles :size="12" aria-hidden="true" /> Same hero</span>
+          <span v-if="dataStatus === 'complete'" class="inline-flex items-center gap-2 rounded-full border border-[#69f0ae]/50 bg-[#173c2c]/90 px-3.5 py-1.5 text-[.72rem] font-black uppercase tracking-[.11em] text-[#a7ffd0] shadow-[0_0_10px_rgba(105,240,174,.45),0_0_24px_rgba(105,240,174,.2)]">
+            <CheckCircle2 :size="15" aria-hidden="true" /> Complete parsed data
+          </span>
+          <span v-else-if="dataStatus === 'partial'" class="inline-flex items-center gap-1.5 rounded-full border border-[#e7b451]/35 bg-[#e7b451]/10 px-3 py-1 text-[.66rem] font-bold uppercase tracking-wider text-[#e7c477]">
+            <AlertTriangle :size="13" aria-hidden="true" /> Partial data
+          </span>
           <span class="comparison-tier">{{ reasonText(tier) }}</span>
           <span v-if="score != null" class="text-[.68rem] font-semibold text-[#aac6e8]">Pair score {{ score }}</span>
         </div>
         <div class="flex items-center gap-3 text-[.68rem] muted">
           <span v-if="left.durationSeconds != null" class="inline-flex items-center gap-1"><Clock3 :size="12" aria-hidden="true" /> {{ formatDuration(left.durationSeconds) }}</span>
-          <ChevronDown v-if="canExpand" :size="18" class="text-[#58a6ff] transition" :class="expanded ? 'rotate-180' : ''" aria-hidden="true" />
+          <button
+            v-if="canExpand"
+            type="button"
+            class="grid size-8 place-items-center rounded-lg text-[#58a6ff] transition hover:bg-[#58a6ff]/10 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#58a6ff]"
+            :aria-expanded="expanded"
+            :aria-controls="detailsId"
+            :aria-label="expanded ? 'Collapse match comparison details' : 'Expand match comparison details'"
+            @click.stop="$emit('toggle')"
+          >
+            <ChevronDown :size="18" class="transition" :class="expanded ? 'rotate-180' : ''" aria-hidden="true" />
+          </button>
           <span v-else :id="`${detailsId}-unavailable`" class="inline-flex items-center gap-1"><LockKeyhole :size="12" aria-hidden="true" /> Same hero required for deep view</span>
         </div>
       </div>
@@ -81,7 +97,21 @@ const orderedItems = items => {
             <div class="min-w-0 flex-1">
               <p class="truncate text-xs font-semibold text-[#aebbb3]">{{ index ? rightName : leftName }}</p>
               <p class="mt-0.5 truncate text-sm font-bold text-[#f1f1eb]">{{ match.heroName || 'Unknown hero' }}</p>
-              <p class="mt-0.5 text-[.68rem] muted">Match #{{ match.matchId }}<template v-if="matchDate(match.startTime)"> · {{ matchDate(match.startTime) }}</template></p>
+              <p class="mt-0.5 flex items-center gap-1 text-[.68rem] muted">
+                <RouterLink
+                  v-if="match.matchId != null"
+                  :to="`/matches/${match.matchId}`"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  class="inline-flex items-center gap-1 text-[#8fc4ff] underline decoration-[#58a6ff]/40 underline-offset-2 transition hover:text-[#c4e1ff]"
+                  :aria-label="`Open match ${match.matchId} in a new tab`"
+                  @click.stop
+                >
+                  Match #{{ match.matchId }} <ExternalLink :size="10" aria-hidden="true" />
+                </RouterLink>
+                <span v-else>Match unavailable</span>
+                <template v-if="matchDate(match.startTime)"> · {{ matchDate(match.startTime) }}</template>
+              </p>
             </div>
             <div class="text-right">
               <p class="text-xs font-black" :class="match.won == null ? 'muted' : match.won ? 'win-text' : 'loss-text'">{{ outcome(match) }}</p>
@@ -109,14 +139,14 @@ const orderedItems = items => {
         </div>
 
         <div class="hidden text-center lg:col-start-2 lg:row-start-1 lg:block">
-          <span class="display-font text-xs text-[#78867d]">VS</span>
+          <span class="display-font text-xl text-[#78867d]">VS</span>
         </div>
       </div>
 
       <div v-if="pair.compatibilityReasons?.length" class="mt-4 flex flex-wrap gap-1.5 border-t border-white/[.06] pt-3">
         <span v-for="reason in pair.compatibilityReasons" :key="reason" class="rounded-full border border-white/10 bg-white/[.035] px-2.5 py-1 text-[.62rem] text-[#aebbb4]">{{ reasonText(reason) }}</span>
       </div>
-    </button>
+    </div>
 
     <div v-if="expanded && canExpand" :id="detailsId" class="border-t border-[#58a6ff]/20 bg-[#06111f]/45 p-4 sm:p-6">
       <slot name="details" />

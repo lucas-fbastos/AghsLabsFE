@@ -199,6 +199,7 @@ onBeforeUnmount(() => {
               :left-name="leftName"
               :right-name="rightName"
               :expanded="expandedKey === pairKey(pair)"
+              :data-status="detailState(pair).data ? (detailState(pair).data.completeData ? 'complete' : 'partial') : ''"
               @toggle="togglePair(pair)"
             >
               <template #details>
