@@ -1,6 +1,6 @@
 <script setup>
 import MatchSearch from '../components/MatchSearch.vue'
-import LiveMatches from '../components/LiveMatches.vue'
+import FeaturedProPlayers from '../components/FeaturedProPlayers.vue'
 import {ArrowDown, Crosshair, Shield, Trophy} from '@lucide/vue'
 </script>
 
@@ -31,7 +31,7 @@ import {ArrowDown, Crosshair, Shield, Trophy} from '@lucide/vue'
         <ArrowDown :size="19"/>
       </a>
     </section>
-    <LiveMatches />
+    <FeaturedProPlayers />
     <section id="explore" class="relative border-t border-white/10 bg-[#151515] py-20">
       <div class="site-container">
         <div class="mb-9 flex flex-wrap items-end justify-between gap-5">
