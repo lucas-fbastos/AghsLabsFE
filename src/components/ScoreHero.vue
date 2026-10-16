@@ -64,6 +64,7 @@ const teams = computed(() => {
       <span class="flex items-center gap-2"><Clock3 :size="14" class="gold"/> {{
           formatDuration(match.duration)
         }}</span><span class="flex items-center gap-2"><Swords :size="14" class="gold"/> {{ modeName(match.gameMode) }}</span><span
+        class="flex items-center gap-2">Average MMR: <span class="font-bold" :class="match.averageMmr === 0 ? 'text-[#89918b]' : 'text-[#c084fc]'">{{ match.averageMmr === 0 ? '-' : match.averageMmr ?? '—' }}</span></span><span
         class="flex items-center gap-2"><MapPin :size="14" class="gold"/> Cluster {{ match.cluster ?? '—' }}</span>
     </div>
   </section>
