@@ -85,7 +85,7 @@ onUnmounted(() => {
       </div>
     </section>
     <footer class="border-t border-white/10 bg-[#151515] py-6">
-      <div class="site-container flex flex-wrap justify-between gap-3 text-xs muted"><span>AGHS LABS · DOTA 2 INTELLIGENCE</span><span>Match data powered by the Aghs Labs API</span>
+      <div class="site-container flex flex-wrap justify-between gap-3 text-xs muted"><span>AGHS LABS · DOTA 2 Match Analysis</span>
       </div>
     </footer>
   </main>

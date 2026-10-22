@@ -269,7 +269,7 @@ function fightMetrics(fight) {
             <ol v-if="timeline?.length" class="mt-3 grid gap-2">
               <li v-for="(fight, fightIndex) in timeline" :key="`${fight.startSeconds}-${fightIndex}`" class="grid grid-cols-[auto_1fr] gap-3 rounded-lg bg-white/[.03] p-3 text-xs">
                 <span class="font-mono text-[#9cc8ff]">{{ clock(fight.startSeconds) }}</span>
-                <span class="text-[#c8d1cb]">{{ compact(fight.damage) }} damage · {{ fight.deaths ?? '—' }} deaths · {{ signed(fight.goldDelta) }} gold</span>
+                <span class="text-[#c8d1cb]">{{ compact(fight.damage) }} damage · {{ fight.deaths ?? '—' }} deaths · <span :class="deltaClass(fight.goldDelta)">{{ signed(fight.goldDelta) }}</span> gold</span>
               </li>
             </ol>
             <p v-else class="mt-3 text-xs muted">No teamfight events available.</p>

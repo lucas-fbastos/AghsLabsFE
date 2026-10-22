@@ -147,6 +147,31 @@ button {
     animation-duration: 1.35s;
 }
 
+.comparison-pair-shake {
+    animation: comparison-pair-shake .42s ease-in-out;
+}
+
+.comparison-require-same-hero {
+    border: 1px solid transparent;
+    border-radius: 999px;
+    padding: .18rem .4rem;
+    transition: color .2s ease, font-size .2s ease, background-color .2s ease, border-color .2s ease, box-shadow .2s ease;
+}
+
+.comparison-require-same-hero-active {
+    border-color: rgba(217, 70, 255, .55);
+    background: rgba(217, 70, 255, .14);
+    box-shadow: 0 0 16px rgba(217, 70, 255, .24);
+    color: #ea73ff;
+    font-size: .8rem;
+}
+
+@keyframes comparison-pair-shake {
+    0%, 100% { transform: translateX(0); }
+    18%, 58% { transform: translateX(-7px); }
+    38%, 78% { transform: translateX(7px); }
+}
+
 .item-count-pill {
     position: absolute;
     z-index: 1;
@@ -451,6 +476,10 @@ button {
         transition: none;
     }
 
+    .comparison-require-same-hero {
+        transition: none;
+    }
+
     .match-card-hover:hover,
     .match-card-hover:focus-within {
         transform: none;
@@ -460,6 +489,10 @@ button {
     .comparison-pair-same.match-card-hover:focus-within,
     .comparison-pair-same.match-card-hover:hover::before,
     .comparison-pair-same.match-card-hover:focus-within::before {
+        animation: none;
+    }
+
+    .comparison-pair-shake {
         animation: none;
     }
 

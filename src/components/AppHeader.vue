@@ -20,7 +20,7 @@ const links = [
             :size="21" :stroke-width="1.5"/></span>
         <span class="display-font text-[1.4rem] leading-none tracking-[.04em] text-[#eee9d8]">AGHS <span
             class="text-[#d946ff]">LABS</span><small
-            class="mt-1 block font-sans text-[.48rem] font-bold tracking-[.32em] text-[#aab4ad]">DOTA 2 INTELLIGENCE</small></span>
+            class="mt-1 block font-sans text-[.48rem] font-bold tracking-[.32em] text-[#aab4ad]">DOTA 2 ANALYSIS</small></span>
       </RouterLink>
       <nav class="hidden items-center gap-8 lg:flex" aria-label="Main navigation">
         <RouterLink v-for="link in links" :key="link.to" :to="link.to"

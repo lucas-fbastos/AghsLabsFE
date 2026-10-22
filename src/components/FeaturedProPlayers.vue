@@ -122,9 +122,15 @@ onBeforeUnmount(() => controller?.abort())
         <article
           v-for="role in visibleRoles"
           :key="role.playerRole"
-          class="match-card-hover panel group flex min-w-[86%] snap-start flex-col rounded-2xl p-5 transition md:min-w-0"
+          class="match-card-hover panel group relative flex min-w-[86%] snap-start flex-col rounded-2xl p-5 transition md:min-w-0"
           role="listitem"
         >
+          <RouterLink
+            :to="`/matches/${role.player.recentWin.matchId}`"
+            class="absolute inset-0 z-0 rounded-2xl focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#d946ff]"
+            :aria-label="`Open ${playerName(role.player)}’s recent winning match ${role.player.recentWin.matchId}`"
+          />
+          <div class="pointer-events-none relative z-10 flex min-h-0 flex-1 flex-col">
           <div class="flex items-center justify-between gap-3">
             <span class="rounded-full border border-[#d946ff]/35 bg-[#d946ff]/10 px-3 py-1 text-[.64rem] font-bold uppercase tracking-[.16em] text-[#ea73ff]">
               {{ role.roleLabel }}
@@ -146,16 +152,19 @@ onBeforeUnmount(() => controller?.abort())
               <UserRound :size="25" aria-hidden="true" />
             </span>
             <div class="min-w-0">
-              <RouterLink
-                :to="`/players/${role.player.accountId}`"
-                class="display-font block truncate text-xl text-[#f6f1e5] transition hover:text-[#ea73ff] focus-visible:outline focus-visible:outline-2 focus-visible:outline-[#d946ff]"
-              >
+              <p class="display-font truncate text-xl text-[#f6f1e5]">
                 {{ playerName(role.player) }}
-              </RouterLink>
+              </p>
               <p v-if="teamLabel(role.player)" class="mt-1 truncate text-xs muted">
                 {{ teamLabel(role.player) }}
               </p>
               <p v-else class="mt-1 text-xs muted">Professional player</p>
+              <RouterLink
+                :to="`/players/${role.player.accountId}`"
+                class="pointer-events-auto mt-2 inline-flex items-center rounded-full border border-[#d946ff]/45 bg-[#d946ff]/10 px-2.5 py-1 text-[.62rem] font-bold text-[#ea73ff] transition hover:border-[#ea73ff] hover:bg-[#d946ff]/20 hover:text-white focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#d946ff]"
+              >
+                View player profile
+              </RouterLink>
             </div>
           </div>
 
@@ -190,18 +199,10 @@ onBeforeUnmount(() => controller?.abort())
           </div>
 
           <div class="mt-auto flex items-center justify-between gap-3 pt-6">
-            <RouterLink
-              :to="`/players/${role.player.accountId}`"
-              class="text-xs font-semibold text-[#d7cfe0] transition hover:text-white focus-visible:outline focus-visible:outline-2 focus-visible:outline-[#d946ff]"
-            >
-              View player
-            </RouterLink>
-            <RouterLink
-              :to="`/matches/${role.player.recentWin.matchId}`"
-              class="inline-flex items-center gap-1 text-xs font-bold text-[#ea73ff] transition group-hover:gap-2 focus-visible:outline focus-visible:outline-2 focus-visible:outline-[#d946ff]"
-            >
-              View match <ArrowRight :size="14" aria-hidden="true" />
-            </RouterLink>
+            <span class="inline-flex items-center gap-1 text-xs font-bold text-[#ea73ff] transition group-hover:gap-2" aria-hidden="true">
+              View match <ArrowRight :size="14" />
+            </span>
+          </div>
           </div>
         </article>
       </div>

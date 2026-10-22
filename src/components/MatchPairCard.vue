@@ -1,5 +1,5 @@
 <script setup>
-import { computed, useId } from 'vue'
+import { computed, onBeforeUnmount, ref, useId } from 'vue'
 import { AlertTriangle, CheckCircle2, ChevronDown, Clock3, ExternalLink, LockKeyhole, Sparkles } from '@lucide/vue'
 import { compact, formatDuration, number } from '../lib/dota.js'
 import HeroPortrait from './HeroPortrait.vue'
@@ -17,10 +17,15 @@ const props = defineProps({
   },
 })
 
-defineEmits(['toggle'])
+const emit = defineEmits(['toggle'])
 
 const uid = useId().replaceAll(':', '')
 const detailsId = `match-pair-details-${uid}`
+const shakeUnsupported = ref(false)
+const sameHeroHintActive = ref(false)
+let shakeFrame = 0
+let shakeTimer
+let sameHeroHintTimer
 const left = computed(() => props.pair.left || {})
 const right = computed(() => props.pair.right || {})
 const sameHero = computed(() => props.pair.deepComparisonAvailable
@@ -48,17 +53,49 @@ const orderedItems = items => {
   if (!hasSlots) return items.slice(0, 6)
   return Array.from({ length: 6 }, (_, slot) => items.find(item => item?.slot === slot))
 }
+
+function handleCardClick(event) {
+  if (event.target.closest('a, button')) return
+  if (canExpand.value) {
+    emit('toggle')
+    return
+  }
+  if (sameHero.value) return
+
+  sameHeroHintActive.value = true
+  clearTimeout(sameHeroHintTimer)
+  sameHeroHintTimer = setTimeout(() => {
+    sameHeroHintActive.value = false
+  }, 2000)
+
+  shakeUnsupported.value = false
+  cancelAnimationFrame(shakeFrame)
+  clearTimeout(shakeTimer)
+  clearTimeout(sameHeroHintTimer)
+  shakeFrame = requestAnimationFrame(() => {
+    shakeUnsupported.value = true
+    shakeFrame = 0
+  })
+  shakeTimer = setTimeout(() => {
+    shakeUnsupported.value = false
+  }, 460)
+}
+
+onBeforeUnmount(() => {
+  cancelAnimationFrame(shakeFrame)
+  clearTimeout(shakeTimer)
+})
 </script>
 
 <template>
   <article
     class="match-card-hover comparison-pair overflow-hidden rounded-2xl border bg-black/30 transition"
-    :class="sameHero ? 'comparison-pair-same' : 'border-white/10'"
+    :class="[sameHero ? 'comparison-pair-same' : 'border-white/10', shakeUnsupported && 'comparison-pair-shake']"
   >
     <div
       class="block w-full p-4 text-left sm:p-5"
-      :class="canExpand ? 'cursor-pointer hover:bg-white/[.025]' : 'cursor-default'"
-      @click="canExpand && $emit('toggle')"
+      :class="canExpand ? 'cursor-pointer hover:bg-white/[.025]' : sameHero ? 'cursor-default' : 'cursor-not-allowed'"
+      @click="handleCardClick"
     >
       <div class="mb-4 flex flex-wrap items-center justify-between gap-2 border-b border-white/[.08] pb-3">
         <div class="flex flex-wrap items-center gap-2">
@@ -86,7 +123,12 @@ const orderedItems = items => {
           >
             <ChevronDown :size="18" class="transition" :class="expanded ? 'rotate-180' : ''" aria-hidden="true" />
           </button>
-          <span v-else :id="`${detailsId}-unavailable`" class="inline-flex items-center gap-1"><LockKeyhole :size="12" aria-hidden="true" /> Same hero required for deep view</span>
+          <span
+            v-else
+            :id="`${detailsId}-unavailable`"
+            class="comparison-require-same-hero inline-flex items-center gap-1"
+            :class="sameHeroHintActive ? 'comparison-require-same-hero-active' : ''"
+          ><LockKeyhole :size="12" aria-hidden="true" /> Same hero required for deep view</span>
         </div>
       </div>
 
