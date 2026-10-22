@@ -1,13 +1,40 @@
 <script setup>
+import {onMounted, onUnmounted, ref} from 'vue'
 import MatchSearch from '../components/MatchSearch.vue'
 import FeaturedProPlayers from '../components/FeaturedProPlayers.vue'
 import {ArrowDown, Crosshair, Shield, Trophy} from '@lucide/vue'
+
+const homeScene = ref(null)
+let parallaxFrame = 0
+
+function updateHeroParallax() {
+  if (parallaxFrame) return
+  parallaxFrame = requestAnimationFrame(() => {
+    const scene = homeScene.value
+    if (scene) {
+      const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches
+      const offset = reducedMotion ? 0 : Math.min(window.scrollY * 0.34, 160)
+      scene.style.setProperty('--hero-parallax-y', `${offset}px`)
+    }
+    parallaxFrame = 0
+  })
+}
+
+onMounted(() => {
+  window.addEventListener('scroll', updateHeroParallax, {passive: true})
+  updateHeroParallax()
+})
+
+onUnmounted(() => {
+  window.removeEventListener('scroll', updateHeroParallax)
+  if (parallaxFrame) cancelAnimationFrame(parallaxFrame)
+})
 </script>
 
 <template>
   <main>
-    <section class="home-scene relative flex min-h-[68svh] items-center justify-center pt-19 sm:min-h-[70svh]">
-      <div class="site-container relative z-10 mx-auto flex flex-col items-center pb-12 pt-10 text-center sm:pb-8">
+    <section ref="homeScene" class="home-scene relative flex min-h-[68svh] items-center justify-center overflow-hidden pt-19 sm:min-h-[70svh]">
+      <div class="hero-content-glass site-container relative z-10 mx-auto flex flex-col items-center pb-12 pt-10 text-center sm:pb-8">
         <div
             class="mb-5 inline-flex items-center gap-2 rounded-full border border-[#d946ff]/40 bg-black px-4 py-2 text-[.65rem] font-bold uppercase tracking-[.2em] text-[#d946ff]">
           <span class="size-1.5 rounded-full bg-[#d946ff] shadow-[0_0_12px_#d946ff]"></span> The battlefield, decoded

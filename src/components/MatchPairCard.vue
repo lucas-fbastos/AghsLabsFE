@@ -52,7 +52,7 @@ const orderedItems = items => {
 
 <template>
   <article
-    class="comparison-pair overflow-hidden rounded-2xl border bg-black/30 transition"
+    class="match-card-hover comparison-pair overflow-hidden rounded-2xl border bg-black/30 transition"
     :class="sameHero ? 'comparison-pair-same' : 'border-white/10'"
   >
     <div

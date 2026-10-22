@@ -122,7 +122,7 @@ onBeforeUnmount(() => controller?.abort())
         <article
           v-for="role in visibleRoles"
           :key="role.playerRole"
-          class="panel group flex min-w-[86%] snap-start flex-col rounded-2xl p-5 transition hover:-translate-y-1 hover:border-[#d946ff]/55 focus-within:border-[#d946ff]/55 md:min-w-0"
+          class="match-card-hover panel group flex min-w-[86%] snap-start flex-col rounded-2xl p-5 transition md:min-w-0"
           role="listitem"
         >
           <div class="flex items-center justify-between gap-3">

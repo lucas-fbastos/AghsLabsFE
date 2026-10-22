@@ -22,7 +22,7 @@ function submit() {
   <form class="w-full" @submit.prevent="submit" novalidate>
     <label class="sr-only" for="match-id">Dota 2 match ID</label>
     <div
-        class="flex items-center gap-3 rounded-full border border-[#d946ff]/45 bg-black p-2 pl-5 shadow-[0_16px_70px_rgba(0,0,0,.6),0_0_60px_rgba(217,70,255,.18)]">
+        class="match-search-surface flex items-center gap-3 rounded-full border border-[#d946ff]/45 p-2 pl-5 shadow-[0_16px_70px_rgba(0,0,0,.6),0_0_60px_rgba(217,70,255,.18)]">
       <Search :size="22" class="shrink-0 text-[#d946ff]"/>
       <input id="match-id" v-model="matchId" type="text" inputmode="numeric" pattern="[0-9]*" autocomplete="off"
              placeholder="Enter a match ID to uncover the story..."

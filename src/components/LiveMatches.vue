@@ -80,7 +80,7 @@ onBeforeUnmount(() => {
           v-for="match in visibleMatches"
           :key="match.matchId"
           :to="`/matches/${match.matchId}`"
-          class="panel block overflow-hidden rounded-2xl p-4 transition hover:border-[#d946ff]/50 focus-visible:outline focus-visible:outline-2 focus-visible:outline-[#d946ff] sm:p-5"
+          class="match-card-hover panel block overflow-hidden rounded-2xl p-4 transition hover:border-[#d946ff]/50 focus-visible:outline focus-visible:outline-2 focus-visible:outline-[#d946ff] sm:p-5"
           :aria-label="`Open match ${match.matchId}`"
         >
           <div class="mb-5 flex flex-wrap items-center justify-between gap-3 border-b border-white/10 pb-4">
